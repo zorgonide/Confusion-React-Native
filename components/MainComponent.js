@@ -5,7 +5,11 @@ import { createStackNavigator } from '@react-navigation/stack';
 import { createDrawerNavigator } from '@react-navigation/drawer'
 import Menu from './MenuComponent';
 import Dishdetail from './DishdetailComponent';
-import Home from "./HomeComponent"
+import Home from "./HomeComponent";
+import Contact from "./ContactComponent"
+import About from "./AboutComponent"
+
+//Updated using new react router https://www.coursera.org/learn/react-native/discussions/weeks/1/threads/75qZq1FlQ0GamatRZQNB0Q
 const MenuNavigator = createStackNavigator();
 
 function MenuNavigatorScreen({ navigation }) {
@@ -35,7 +39,7 @@ function MenuNavigatorScreen({ navigation }) {
     );
 }
 
-{/** Navigation Part 2 - Home and Drawer Navigation */}
+//Updated using new react router https://www.coursera.org/learn/react-native/discussions/weeks/1/threads/75qZq1FlQ0GamatRZQNB0Q
 
 const HomeNavigator = createStackNavigator();
 
@@ -60,7 +64,53 @@ function HomeNavigatorScreen({ navigation }) {
       </HomeNavigator.Navigator>
   );
 }
+const ContactNavigator = createStackNavigator();
 
+function ContactNavigatorScreen({ navigation }) {
+  return(
+      <ContactNavigator.Navigator
+          initialRouteName='Contact'
+          screenOptions={{
+              headerStyle: {
+                  backgroundColor: "#512DA8"
+              },
+              headerTintColor: "#fff",
+              headerTitleStyle: {
+                  color: "#fff"            
+              }
+          }}
+      >
+          <ContactNavigator.Screen
+              name="Contact"
+              component={Contact}
+          />         
+      </ContactNavigator.Navigator>
+  );
+}
+
+const AboutNavigator = createStackNavigator();
+
+function AboutNavigatorScreen({ navigation }) {
+  return(
+      <AboutNavigator.Navigator
+          initialRouteName='About'
+          screenOptions={{
+              headerStyle: {
+                  backgroundColor: "#512DA8"
+              },
+              headerTintColor: "#fff",
+              headerTitleStyle: {
+                  color: "#fff"            
+              }
+          }}
+      >
+          <AboutNavigator.Screen
+              name="About Us"
+              component={About}
+          />         
+      </AboutNavigator.Navigator>
+  );
+}
 const Drawer = createDrawerNavigator();
 
 function MainNavigator({ navigation }) {
@@ -69,6 +119,8 @@ function MainNavigator({ navigation }) {
         <Drawer.Navigator initialRouteName="Home">
           <Drawer.Screen name="Home" component={HomeNavigatorScreen} />
           <Drawer.Screen name="Menu" component={MenuNavigatorScreen} />
+          <Drawer.Screen name="Contact" component={ContactNavigatorScreen} />
+          <Drawer.Screen name="About Us" component={AboutNavigatorScreen} />
         </Drawer.Navigator>
 
     );
