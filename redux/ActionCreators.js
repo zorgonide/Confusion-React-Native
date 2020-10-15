@@ -148,8 +148,45 @@ export const postFavorite = (dishId)  => (dispatch) => {
     }, 2000);
 };
 
-
 export const addFavorite = (dishId) => ({
     type: ActionTypes.ADD_FAVORITE,
     payload: dishId
 });
+
+export const addComment = (com) => ({
+    type: ActionTypes.ADD_COMMENT,
+    payload: com
+});
+export const postComment = (dishId, rating, comment, author) => (dispatch) => {
+    const newComment = {
+        dishId: dishId,
+        comment: comment,
+        rating: rating,
+        author: author,
+        date: new Date().toISOString()
+
+    };
+    return fetch(baseUrl + 'comments', {
+        method: 'POST',
+        body: JSON.stringify(newComment),
+        headers: {
+            "Content-Type": "application/json"
+        },
+        credentials: "same-origin"
+    })
+    .then(res => {
+        if(res.ok) {
+            return res;
+        } else {
+            var error = new Error('Error ' + res.status + ' ' + res.statusText);
+            error.res = res;
+            throw error;
+        }
+    },
+    error => {
+        throw error;
+    })
+    .then(res => res.json())
+    .then(res => setTimeout(() => {dispatch(addComment(res))}, 2000))
+    .catch(error => { console.log('Error in posting comment ', error.message) });
+};

@@ -20,7 +20,9 @@ const mapStateToProps = state => {
     dishes: state.dishes,
     comments: state.comments,
     promotions: state.promotions,
-    leaders: state.leaders
+    leaders: state.leaders,
+    addComment:(dishId, rating, comment, author) => dispatch(addComment(dishId, rating, comment, author)),
+    postComment:(dishId, rating, comment, author) => dispatch(postComment(dishId, rating, comment, author)),
   }
 }
 
