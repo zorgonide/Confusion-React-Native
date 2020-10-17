@@ -166,11 +166,11 @@ const FavoritesNavigator = createStackNavigator();
 function FavoritesNavigatorScreen(){
     return(
         <FavoritesNavigator.Navigator
-            initialRouteName='Favorites Us'
+            initialRouteName='Favorites'
             screenOptions={HeaderOptions}
         >
             <FavoritesNavigator.Screen
-                name="Favorites Us"
+                name="Favorites"
                 component={Favorites}
                 options={
                     ({navigation}) => ({
