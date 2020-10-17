@@ -305,7 +305,7 @@ function MainNavigatorDrawer() {
                 options={{
                     drawerIcon: ({tintColor}) => (
                         <Icon
-                            name='address-card'
+                            name='table'
                             type='font-awesome'
                             size={22}
                             color={tintColor}
