@@ -15,6 +15,7 @@ import Reservation from './ReservationComponent';
 import Favorites from "./FavoriteComponent";
 import { connect } from 'react-redux';
 import { fetchDishes, fetchComments, fetchPromos, fetchLeaders } from '../redux/ActionCreators';
+import Login from './LoginComponent';
 
 const mapStateToProps = state => {
   return {
@@ -129,7 +130,37 @@ function HomeNavigatorScreen() {
         </HomeNavigator.Navigator>
     );
 }
+const LoginNavigator = createStackNavigator();
 
+
+function LoginNavigatorScreen() {
+    return(
+        <LoginNavigator.Navigator
+            initialRouteName='Login'
+            screenOptions={HeaderOptions}
+        >
+            <LoginNavigator.Screen
+                name="Login"
+                component={Login}
+                options={
+                    ({navigation}) => ({
+                        headerLeft: () => (
+                            <Icon
+                                iconStyle={{ paddingLeft: 15 }} 
+                                name='menu'
+                                size={30}
+                                color='white'
+                                onPress={() => 
+                                    navigation.toggleDrawer()}
+                            />
+                        )
+                    
+                    })
+                 }
+            />
+        </LoginNavigator.Navigator>
+    );
+}
 const ContactNavigator = createStackNavigator();
 
 function ContactNavigatorScreen(){
@@ -270,6 +301,21 @@ function MainNavigatorDrawer() {
             }}
             drawerContent={props => <CustomDrawerContentComponent {...props}/>}
         >
+            <MainNavigator.Screen 
+                name="Login"       
+                component={LoginNavigatorScreen} 
+                options={{
+                    drawerIcon: ({tintColor}) => (
+                        <Icon
+                            name='sign-in'
+                            type='font-awesome'
+                            size={30}
+                            color={tintColor}
+                        />
+                    )
+                }}
+
+            />
             <MainNavigator.Screen 
                 name="Home"       
                 component={HomeNavigatorScreen} 
