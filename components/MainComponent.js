@@ -1,10 +1,10 @@
 import React, { Component } from 'react';
-import { ScrollView, Text, View, Image, StyleSheet } from 'react-native';
+import { ScrollView, Text, View, Image, StyleSheet, Platform } from 'react-native';
 import { NavigationContainer } from '@react-navigation/native';
 import { createStackNavigator } from '@react-navigation/stack';
 import { createDrawerNavigator, DrawerItemList } from '@react-navigation/drawer';
 import { Icon } from 'react-native-elements';
-
+import * as Notifications from 'expo-notifications';
 
 import Home from './HomeComponent';
 import Menu from './MenuComponent';
