@@ -21,7 +21,14 @@ class Reservation extends Component {
     toggleModal() {
         this.setState({showModal: !this.state.showModal});
     }
+    // componentDidMount() {
+    //     Notifications.createChannelAndroidAsync('Confusion', {
+    //         name: 'Confusion',
+    //         sound: true,
+    //         vibrate: true
+    //     })
 
+    // }
     handleReservation() {
         let date = new Date(this.state.date);
         let year = date.getFullYear();
