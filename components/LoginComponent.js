@@ -8,6 +8,7 @@ import * as SecureStore from 'expo-secure-store';
 import * as Permissions from 'expo-permissions';
 import * as Notifications from 'expo-notifications';
 import * as ImagePicker from 'expo-image-picker';
+import * as ImageManipulator from 'expo-image-manipulator';
 import { NavigationContainer } from '@react-navigation/native';
 class LoginTab extends Component {
 
@@ -139,6 +140,18 @@ class RegisterTab extends Component {
                 this.setState({imageUrl: capturedImage.uri });
             }
         }
+
+    }
+    processImage = async (imageUri) => {
+        let processedImage = await ImageManipulator.manipulate(
+            imageUri, 
+            [
+                {resize: {width: 400}}
+            ],
+            {format: 'png'}
+        );
+        console.log(processedImage);
+        this.setState({imageUrl: processedImage.uri });
 
     }
     
