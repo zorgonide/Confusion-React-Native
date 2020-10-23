@@ -5,6 +5,7 @@ import { Text, View, StyleSheet, Picker, Switch, Button, Modal, ScrollView, Aler
 import * as Animatable from 'react-native-animatable';
 import * as Permissions from 'expo-permissions';
 import * as Notifications from 'expo-notifications';
+import * as Calendar from 'expo-calendar';
 
 class Reservation extends Component {
 
@@ -21,14 +22,17 @@ class Reservation extends Component {
     toggleModal() {
         this.setState({showModal: !this.state.showModal});
     }
-    // componentDidMount() {
-    //     Notifications.createChannelAndroidAsync('Confusion', {
-    //         name: 'Confusion',
-    //         sound: true,
-    //         vibrate: true
-    //     })
-
-    // }
+    componentDidMount() {
+        //OBTAIN CALENDAR PERMISSION
+        (async () => {
+            const { status } = await Calendar.requestCalendarPermissionsAsync();
+            if (status === 'granted') {
+              const calendars = await Calendar.getCalendarsAsync();
+              console.log('Here are all your calendars:');
+              console.log({ calendars });
+            }
+          })();
+    }
     handleReservation() {
         let date = new Date(this.state.date);
         let year = date.getFullYear();
@@ -54,15 +58,36 @@ class Reservation extends Component {
                 {
                     text: 'OK', 
                     onPress: () => {
-                        this.presentLocalNotification(this.state.date)
-                            this.resetForm()
+                        this.presentLocalNotification(this.state.date);
+                        this.addReservationToCalendar(this.state.date);
+                        this.resetForm()
                     }
                 },
             ],
             { cancelable: true }
         );
     }
+    async getDefaultCalendarSource() {
+        const calendars = await Calendar.getCalendarsAsync();
+        const defaultCalendars = calendars.filter(each => each.source.name === 'Default');
+        console.log(defaultCalendars[0].source)
+        return defaultCalendars[0].source;
+    }
+    async addReservationToCalendar(date) {
+        let dateInMilliseconds = Date.parse(date);
+        let startDate = new Date(dateInMilliseconds);
+        let endDate = new Date(dateInMilliseconds + 2 * 60 * 60 * 1000);
 
+        // const newCalendar = await Calendar.createEventAsync(Calendar.DEFAULT, {
+
+        const newCalendar = await Calendar.createEventAsync(getDefaultCalendarSource(), {
+            title: 'Con Fusion Table Reservation',
+            startDate: startDate,
+            endDate: endDate,
+            timeZone: 'Asia/Hong_Kong',
+            location: '121, Clear Water Bay Road, Clear Water Bay, Kowloon, Hong Kong'
+        });
+    }
     resetForm() {
         this.setState({
             guests: 1,

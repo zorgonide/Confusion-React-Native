@@ -10,6 +10,7 @@ import * as Notifications from 'expo-notifications';
 import * as ImagePicker from 'expo-image-picker';
 import * as ImageManipulator from 'expo-image-manipulator';
 import { NavigationContainer } from '@react-navigation/native';
+
 class LoginTab extends Component {
 
     constructor(props) {
@@ -137,22 +138,40 @@ class RegisterTab extends Component {
             });
             if (!capturedImage.cancelled) {
                 console.log(capturedImage);
-                this.setState({imageUrl: capturedImage.uri });
+                // this.setState({imageUrl: capturedImage.uri });
+                this.processImage(capturedImage.uri);
             }
         }
 
     }
+    getImageFromGallery = async () => {
+        const cameraPermission = await Permissions.askAsync(Permissions.CAMERA);
+        const cameraRollPermission = await Permissions.askAsync(Permissions.CAMERA_ROLL);
+        let result = await ImagePicker.launchImageLibraryAsync({
+            mediaTypes: ImagePicker.MediaTypeOptions.All,
+            allowsEditing: true,
+            aspect: [4, 4],
+            quality: 1,
+          });
+      
+          console.log(result);
+      
+          if (!result.cancelled) {
+            // this.setState({imageUrl: result.uri });
+            this.processImage(result.uri);
+        }
+    }
+
     processImage = async (imageUri) => {
-        let processedImage = await ImageManipulator.manipulate(
-            imageUri, 
+        let processedImage = await ImageManipulator.manipulateAsync(
+            imageUri,
             [
-                {resize: {width: 400}}
+                { resize: { width: 400 } }
             ],
-            {format: 'png'}
+            { format: 'png' }
         );
         console.log(processedImage);
-        this.setState({imageUrl: processedImage.uri });
-
+        this.setState({ imageUrl: processedImage.uri });
     }
     
     handleRegister() {
@@ -166,7 +185,7 @@ class RegisterTab extends Component {
         return(
             <ScrollView>
             <View style={styles.container}>
-                <View style={styles.imageContainer}>
+                <View style={{ flexDirection: 'row', justifyContent: 'space-around' }}>
                     <Image 
                         source={{uri: this.state.imageUrl}} 
                         loadingIndicatorSource={require('./images/logo.png')}
@@ -176,6 +195,10 @@ class RegisterTab extends Component {
                         title="Camera"
                         onPress={this.getImageFromCamera}
                         />
+                    <Button
+                        title="Gallery"
+                        onPress={this.getImageFromGallery}
+                    />
                 </View>
                 <Input
                     placeholder="Username"
@@ -254,8 +277,8 @@ const styles = StyleSheet.create({
     },
     image: {
       margin: 10,
-      width: 80,
-      height: 60
+      width: 100,
+      height: 100
     },
     formInput: {
         margin: 20
